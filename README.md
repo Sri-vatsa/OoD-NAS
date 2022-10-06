@@ -1,4 +1,24 @@
-# NAS-OoD: Neural Architecture Search for Out-of-Distribution Generalization
+# Out of Distribution NAS
+
+Getting started:
+
+1. SSH into pace cluster `[gt_userid]@coc-ice.pace.gatech.edu`
+2. load anaconda `load anaconda3` (default is latest)
+3. if first time, create conda env: `conda create -n ood-nas`
+4. activate conda env: `conda activate ood-nas`
+5. install the following:
+  - `conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch -c
+    conda-forge`
+  - `conda install -c conda-forge cvxpy`
+  - `conda install -c mosek mosek`
+
+6. change the account in `.pbs` file and submit job to cluster 
+
+[pace cheatsheet](https://docs.pace.gatech.edu/gettingStarted/commands/)
+
+[pace docs](https://docs.pace.gatech.edu/ice_cluster/ice-guide/)
+
+----- From original readme
 
 ## Outline
 
