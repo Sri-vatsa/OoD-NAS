@@ -14,7 +14,7 @@ from nas_ood_single.search.models.classCategory import cNet
 
 from torch.autograd import Function
 
-from keras.utils.np_utils import *
+#from keras.utils.np_utils import *
 import os
 
 __all__ = ["MixedOp", "Cell", "NetWork", "Generator", "domainPre", "categoryPre"]

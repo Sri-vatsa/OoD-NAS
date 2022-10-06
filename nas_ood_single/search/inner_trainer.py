@@ -21,7 +21,7 @@ import numpy as np
 
 import os
 
-from keras.utils.np_utils import *
+#from keras.utils.np_utils import *
 
 
 #from layers import SinkhornDistance
@@ -159,8 +159,7 @@ class InnerTrainer:
                 logits_syn = self.categoryPre(synthetic)
                 loss_ce = F.cross_entropy(logits_syn, target_val)
 
-                loss_generator = self.lambda_cycle * criterion_cycle(recimg, input_val) - self.lambda_ot*loss_ot + 
-                self.lambda_ce*loss_ce
+                loss_generator = self.lambda_cycle * criterion_cycle(recimg, input_val) - self.lambda_ot*loss_ot + self.lambda_ce*loss_ce
                 loss_generator.backward(retain_graph=True)
                 self.G_optimizer.step()
   

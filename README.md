@@ -11,8 +11,10 @@ Getting started:
     conda-forge`
   - `conda install -c conda-forge cvxpy`
   - `conda install -c mosek mosek`
+  - `conda install -c conda-forge tensorboardx`
 
-6. change the account in `.pbs` file and submit job to cluster 
+6. change the account in `.pbs` file and submit job to cluster `qsub OoD-NAS/test_run.pbs`
+7. check status of job & also check `test-pace-1.out` for stderr and stdout.
 
 [pace cheatsheet](https://docs.pace.gatech.edu/gettingStarted/commands/)
 

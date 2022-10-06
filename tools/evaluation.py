@@ -1,10 +1,13 @@
 import os
 import sys
+
+sys.path.append(os.getcwd())
+
 import time
 import glob
 import numpy as np
 import torch
-from nas_ood_nas import utils
+from nas_ood_single import utils
 import logging
 import argparse
 import torch.nn as nn
