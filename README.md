@@ -1,4 +1,6 @@
-# Out of Distribution NAS
+# repo-team5
+
+### Out of Distribution NAS
 
 Getting started:
 
@@ -21,11 +23,6 @@ Getting started:
 [pace docs](https://docs.pace.gatech.edu/ice_cluster/ice-guide/)
 
 ----- From original readme
-
-## Outline
-
-Recent advances on Out-of-Distribution (OoD) generalization reveal the robustness of deep learning models against different kinds of distribution shifts in real-world applications. In this work, we propose robust Neural Architecture Search for OoD generalization (NAS-OoD), which optimizes the architecture with respect to its performance on the generated OoD data by gradient descent.
-Extensive experimental results show that NAS-OoD achieves superior performance on various OoD generalization benchmarks with deep models having a much fewer number of parameters.
 
 ### Prerequisites
 
@@ -52,8 +49,6 @@ bash main_search_onestage.sh
 
 
 ### References
-If you find this work or code useful, please cite:
-
 ```
 @inproceedings{bai2021ood,
   title={Nas-ood: Neural architecture search for out-of-distribution generalization},
@@ -62,5 +57,4 @@ If you find this work or code useful, please cite:
   year={2021}
 }
 ```
-
 
