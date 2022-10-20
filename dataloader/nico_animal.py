@@ -9,9 +9,6 @@ import numpy as np
 
 import os
 
-import moxing as mox
-
-
 
 class NicoAnimal(Dataset):
     """ Usage:

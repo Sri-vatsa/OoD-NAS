@@ -11,7 +11,9 @@ import torch
 sys.path.insert(0, osp.join(osp.dirname(osp.abspath(__file__)), '../'))
 
 from nas_ood_single import Trainer
+from torch.utils.data import DataLoader
 
+from tensorboardX import SummaryWriter
 
 import datetime
 import logging
@@ -30,9 +32,9 @@ def get_args():
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
     parser.add_argument('--weight_decay', type=float, default=3e-4, help='weight decay')
     parser.add_argument('--report_freq', type=float, default=50, help='report frequency')
+    parser.add_argument('--init_channels', type=int, default=36, help='num of init channels')
     parser.add_argument('--gpu', type=int, default=0, help='gpu device id')
     parser.add_argument('--epochs', type=int, default=600, help='num of training epochs')
-    parser.add_argument('--init_channels', type=int, default=36, help='num of init channels')
     parser.add_argument('--layers', type=int, default=20, help='total number of layers')
     parser.add_argument('--steps', type=int, default=4, help='total number of layers')
     parser.add_argument('--model_path', type=str, default='saved_models', help='path to save the model')
@@ -48,7 +50,7 @@ def get_args():
     parser.add_argument('--arch_learning_rate', type=float, default=3e-4, help='learning rate for arch encoding')
     parser.add_argument('--arch_weight_decay', type=float, default=1e-3, help='weight decay for arch encoding')
     
-    parser.add_argument('--root_path', type=str, default='/home/ma-user/work/dataset/NicoNew')
+    parser.add_argument('--root_path', type=str, default='/storage/home/hcocice1/sp308/dataset/NicoNew')
 
     #args = parser.parse_args()
     args, unknown_args = parser.parse_known_args()
@@ -57,7 +59,7 @@ def get_args():
     save_path2 = '_'.join([str(args.learning_rate), str(args.arch_learning_rate), str(args.batch_size), 
                            str(args.epochs), datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")])
 
-    args.save_dir = '/home/ma-user/work/NASOOD'
+    args.save_dir = '/storage/home/hcocice1/sp308/train_out/'
 
     args.save_path = os.path.join(args.save_dir, save_path1, save_path2)
     args.save_path1 = os.path.join(args.save_dir, save_path1)
@@ -73,6 +75,47 @@ def create_exp_dir(path):
         # os.mkdir(path)
         os.makedirs(path, exist_ok=True)
     print('Experiment dir : {}'.format(path))
+
+
+def get_loader(args):
+
+    if args.dataset == 'nico_animal':
+        from dataloader.nico_animal import NicoAnimal as Dataset
+        args.dropblock_size = 5
+        trainset = Dataset('animal_train_ood', args, augment=True)
+        valset = Dataset('animal_val_ood', args)
+        testset = Dataset('animal_test_ood', args)
+
+    elif args.dataset == 'nico_vehicle':
+        from dataloader.nico_vehicle import NicoVehicle as Dataset
+        args.dropblock_size = 5
+        trainset = Dataset('vehicle_train_ood', args, augment=True)
+        valset = Dataset('vehicle_val_ood', args)
+        testset = Dataset('vehicle_test_ood', args)
+
+    elif args.dataset == 'pacs':
+        from dataloader.pacsLoader import pacsDataset as Dataset
+        trainset = Dataset('train', args)
+        valset = Dataset('val', args)
+        testset = Dataset('test', args)
+        
+    elif args.dataset == 'finger':
+        from model.dataloader.fingerprintLoader import FingerDataset as Dataset
+        trainset = Dataset('train', args)
+        valset = Dataset('val', args)
+        testset = Dataset('test', args)
+    else:
+        raise ValueError('Non-supported Dataset.')
+
+    args.num_class = trainset.num_class
+    args.num_classes = trainset.num_class
+    args.num_concept = trainset.num_concept
+
+    train_loader = DataLoader(dataset=trainset, batch_size=args.batch_size, shuffle=True, pin_memory=True, num_workers=2)
+    val_loader = DataLoader(dataset=valset, batch_size=args.batch_size, shuffle=False, pin_memory=True, num_workers=2)
+    test_loader = DataLoader(dataset=testset, batch_size=args.batch_size, shuffle=False, pin_memory=True, num_workers=2)
+
+    return train_loader, val_loader, test_loader
 
 
 def main():
@@ -97,18 +140,15 @@ def main():
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
     
-    trainer = Trainer(args)
-    trainer.train()
+    writer = SummaryWriter(args.save_path)
 
+    train_loader, val_loader, test_loader = get_loader(args)
 
+    trainer = Trainer(args, logging, writer)
 
+    trainer.train(train_loader, val_loader, test_loader)
+
+    writer.close()
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-

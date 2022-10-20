@@ -1,0 +1,18 @@
+#PBS -N train-single-pace-1               # name of job
+#PBS -A [GTID]                  # account to which job is charged, ex: GT-gburdell3
+#PBS -l nodes=1:ppn=2:gpus=2        # resources allocated, 1 node 2 processors
+#PBS -l pmem=4gb                    # memory per core
+#PBS -l walltime=60:00              # job will run at most 30 min
+#PBS -q coc-ice-gpu                     # job is submitted to system queue
+#PBS -j oe                          # output and error is combined into the same file
+#PBS -o train-pace-1.out          # output file is named gettingStarted.out
+
+module load anaconda3/2021.05
+
+conda activate ood-nas
+
+cd NAS-OoD
+
+python train_search_single.py --cutout --auxiliary
+
+#python tools/evaluation.py --auxiliary --cutout --onestage --arch NASOOD_onestage
