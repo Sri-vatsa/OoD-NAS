@@ -3,7 +3,7 @@
 Getting started:
 
 1. SSH into pace cluster `[gt_userid]@coc-ice.pace.gatech.edu`
-2. load anaconda `load anaconda3` (default is latest)
+2. load anaconda `module load anaconda3` (default is latest)
 3. if first time, create conda env: `conda create -n ood-nas`
 4. activate conda env: `conda activate ood-nas`
 5. install the following:
