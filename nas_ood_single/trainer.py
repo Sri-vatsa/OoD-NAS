@@ -31,7 +31,7 @@ class Trainer:
         self.steps        = cfg.steps
 
         self.dataset      = cfg.dataset
-
+        
         self.search_trainer = InnerTrainer(cfg)
         self.num_edges = self.search_trainer.model.num_edges
      

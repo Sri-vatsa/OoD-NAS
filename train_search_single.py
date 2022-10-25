@@ -22,8 +22,8 @@ import logging
 def get_args():
     parser = argparse.ArgumentParser("ood-nas-single")
     parser.add_argument('--data', type=str, default='~/data', help='location of the data corpus')
-    parser.add_argument('--dataset', type=str, default='nico_animal', choices=['nico_animal', 'nico_vehicle'])
-    parser.add_argument('--batch_size', type=int, default=96, help='batch size')
+    parser.add_argument('--dataset', type=str, default='nico_animal', choices=['nico_animal', 'nico_vehicle', 'pacs'])
+    parser.add_argument('--batch_size', type=int, default=16, help='batch size')
     parser.add_argument('--proj_dims', type=int, default=7, help='proj dimensions')
     parser.add_argument('--sparseness', type=int, default=2, help='sparseness')
     parser.add_argument('--num_classes', type=int, default=10, help='num_classes')
@@ -34,7 +34,7 @@ def get_args():
     parser.add_argument('--report_freq', type=float, default=50, help='report frequency')
     parser.add_argument('--init_channels', type=int, default=36, help='num of init channels')
     parser.add_argument('--gpu', type=int, default=0, help='gpu device id')
-    parser.add_argument('--epochs', type=int, default=600, help='num of training epochs')
+    parser.add_argument('--epochs', type=int, default=100, help='num of training epochs')
     parser.add_argument('--layers', type=int, default=20, help='total number of layers')
     parser.add_argument('--steps', type=int, default=4, help='total number of layers')
     parser.add_argument('--model_path', type=str, default='saved_models', help='path to save the model')
@@ -49,8 +49,20 @@ def get_args():
     parser.add_argument('--auxiliary_weight', type=float, default=0.4, help='init learning rate')
     parser.add_argument('--arch_learning_rate', type=float, default=3e-4, help='learning rate for arch encoding')
     parser.add_argument('--arch_weight_decay', type=float, default=1e-3, help='weight decay for arch encoding')
-    
-    parser.add_argument('--root_path', type=str, default='/storage/home/hcocice1/sp308/dataset/NicoNew')
+    parser.add_argument('--targetdomain', type=str, default="cartoon", help='domain in pacs to be removed unless in testing')
+    parser.add_argument('--root_saves_concept_path', type=str, default='/storage/home/hcocice1/sp308/NAS-OoD/saves_concept/')
+    parser.add_argument('--root_saves_category_path', type=str, default='/storage/home/hcocice1/sp308/NAS-OoD/saves_category/')
+    parser.add_argument('--val_type', type=str, default=None) # Seems like a dummy value; keeping it for compatibility with functions
+    parser.add_argument('--lambda_cycle', type=float, default=10, help='balance for cycle loss')
+    parser.add_argument('--start_epoch', type=int, default=300, help='start epoch to add synthetic to train set')
+    parser.add_argument('--ratio', type=float, default=0.5, help='ratio to add synthetic data to train set')
+    parser.add_argument('--lambda_lr', type=float, default=0.0001, help='balance for generator learning rate')
+    parser.add_argument('--lambda_ot', type=float, default=0.01, help='balance for optimal transport distance loss')
+    parser.add_argument('--lambda_ce', type=float, default=0.01, help='balance for generator cross entropy loss')
+    parser.add_argument('--backbone_class', type=str, default='ConvNet', help='backbone for domain classifier')
+    parser.add_argument('--stage1_ratio', type=float, default=1, help='ratio to add synthetic data to train set')
+
+    parser.add_argument('--root_path', type=str, default='/storage/home/hcocice1/sp308/data/PACS/')
 
     #args = parser.parse_args()
     args, unknown_args = parser.parse_known_args()

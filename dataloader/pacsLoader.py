@@ -20,8 +20,6 @@ import os
 
 from random import sample, random
 
-
-
 class pacsDataset(data.Dataset):
     def __init__(self, setname, args):
 
@@ -38,7 +36,7 @@ class pacsDataset(data.Dataset):
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
-        self.image_path1 = os.path.join(args.root_path, 'kfold')
+        self.image_path1 = args.root_path
         self.split_path = os.path.join(args.root_path, 'kfold')
 
 

@@ -8,7 +8,7 @@ class ccNet(nn.Module):
         super().__init__()
         self.args = args
         if args.backbone_class == 'ConvNet':
-            from ista_nas_single.search.models.convnet import ConvNet
+            from nas_ood_single.search.models.convnet import ConvNet
             if args.dataset == 'finger':
                 self.encoder = ConvNet(x_dim=2, hid_dim=64, z_dim=64)
                 hdim = 576

@@ -26,7 +26,20 @@ import os
 
 #from layers import SinkhornDistance
 
-
+def to_categorical(y, num_classes=None, dtype="float32"):
+    y = np.array(y, dtype="int")
+    input_shape = y.shape
+    if input_shape and input_shape[-1] == 1 and len(input_shape) > 1:
+        input_shape = tuple(input_shape[:-1])
+    y = y.ravel()
+    if not num_classes:
+        num_classes = np.max(y) + 1
+    n = y.shape[0]
+    categorical = np.zeros((n, num_classes), dtype=dtype)
+    categorical[np.arange(n), y] = 1
+    output_shape = input_shape + (num_classes,)
+    categorical = np.reshape(categorical, output_shape)
+    return categorical
 
 __all__ = ["InnerTrainer"]
 
@@ -50,7 +63,7 @@ class InnerTrainer:
         else:
             self.in_dim = 3
             
-        self.generator = Generator(in_dim = self.in_dim, conv_dim=64, c_dim=self.num_concept, repeat_num=3).cuda()
+        self.generator = Generator(in_dim = self.in_dim, conv_dim=16, c_dim=self.num_concept, repeat_num=1).cuda()
         self.domainPre = domainPre(cfg).cuda()
         self.categoryPre = categoryPre(cfg).cuda()
         

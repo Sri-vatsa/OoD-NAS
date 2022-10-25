@@ -117,10 +117,10 @@ class ResidualBlock(nn.Module):
         super(ResidualBlock, self).__init__()
         self.main = nn.Sequential(
             nn.Conv2d(dim_in, dim_out, kernel_size=3, stride=1, padding=1, bias=False),
-            nn.InstanceNorm2d(dim_out, affine=True, track_running_stats=True),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(dim_out, dim_out, kernel_size=3, stride=1, padding=1, bias=False),
             nn.InstanceNorm2d(dim_out, affine=True, track_running_stats=True))
+            #nn.ReLU(inplace=True),
+            #nn.Conv2d(dim_out, dim_out, kernel_size=3, stride=1, padding=1, bias=False),
+            #nn.InstanceNorm2d(dim_out, affine=True, track_running_stats=True))
 
     def forward(self, x):
         return x + self.main(x)
@@ -139,12 +139,10 @@ class GradReverse(Function):
         return -1.0*grad_output, None
 
 
-
-
 class Generator(nn.Module):
     """Generator network."""
 
-    def __init__(self, in_dim=3, conv_dim=64, c_dim=1, repeat_num=3):
+    def __init__(self, in_dim=3, conv_dim=16, c_dim=1, repeat_num=1):
         super(Generator, self).__init__()
 
         self.c_dim = c_dim
@@ -157,7 +155,7 @@ class Generator(nn.Module):
 
         # Down-sampling layers
         curr_dim = conv_dim
-        for i in range(2):
+        for i in range(1):
             if i == 0:
                 layers.append(nn.Conv2d(curr_dim + (2*self.c_dim + 2), curr_dim*2, kernel_size=4, stride=2, padding=1, bias=False))
             else:
@@ -171,7 +169,7 @@ class Generator(nn.Module):
             layers.append(ResidualBlock(dim_in=curr_dim, dim_out=curr_dim))
 
         # Up-sampling layers
-        for i in range(2):
+        for i in range(1):
             layers.append(nn.ConvTranspose2d(curr_dim, curr_dim//2, kernel_size=4, stride=2, padding=1, bias=False))
             layers.append(nn.InstanceNorm2d(curr_dim//2, affine=True, track_running_stats=True))
             layers.append(nn.ReLU(inplace=True))

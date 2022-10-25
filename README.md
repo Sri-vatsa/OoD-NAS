@@ -12,7 +12,7 @@ Getting started:
   - `conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch -c
     conda-forge`
   - `conda install -c conda-forge cvxpy`
-  - `conda install -c mosek mosek`
+  - `ZZZZ`
   - `conda install -c conda-forge tensorboardx`
   - `conda install tqdm`
 
