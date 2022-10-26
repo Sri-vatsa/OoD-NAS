@@ -23,6 +23,11 @@ Getting started:
 
 [pace docs](https://docs.pace.gatech.edu/ice_cluster/ice-guide/)
 
+### Git push/pull
+
+External repo - `git push origin main`
+GT Repo - `git push grading main` (name of GT github remote is grading)
+
 ----- From original readme
 
 ### Prerequisites
