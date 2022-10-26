@@ -54,7 +54,7 @@ def get_args():
     parser.add_argument('--root_saves_category_path', type=str, default='/storage/home/hcocice1/sp308/NAS-OoD/saves_category/')
     parser.add_argument('--val_type', type=str, default=None) # Seems like a dummy value; keeping it for compatibility with functions
     parser.add_argument('--lambda_cycle', type=float, default=10, help='balance for cycle loss')
-    parser.add_argument('--start_epoch', type=int, default=100, help='start epoch to add synthetic to train set')
+    parser.add_argument('--start_epoch', type=int, default=0, help='start epoch to add synthetic to train set')
     parser.add_argument('--ratio', type=float, default=0.5, help='ratio to add synthetic data to train set')
     parser.add_argument('--lambda_lr', type=float, default=0.0001, help='balance for generator learning rate')
     parser.add_argument('--lambda_ot', type=float, default=0.01, help='balance for optimal transport distance loss')
